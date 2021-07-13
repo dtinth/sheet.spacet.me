@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Quickly turn Google Sheets into a JSON endpoint."
+    />
+    <title>sheet.spacet.me</title>
+    <!-- <meta
+      property="og:image"
+      content="https://capture.the.spacet.me/eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1cmwiOiJodHRwczovL3BsZWFzZXRha2VjYXJlb2Z5b3Vyc2VsZi5ub3cuc2gvP3Y9MSNvZyIsIndpZHRoIjo2MDAsImhlaWdodCI6NjAwLCJkZXZpY2VTY2FsZUZhY3RvciI6MiwiaXNzIjoiZHRpbnRoIn0.dnIVaX3E60T7DtJ59E03YrcOoU3E1gTuoErxCCIGC-Ry3aDcW99NyeamCmEtQ_K08expSX75vvobiBdRbO_c-vQKnh76mmD0vy1vG_z9eYgkUEPUqV_t7kYpcG2Z6ZUzU35pfUMiX4G0HLD6vjC0qWVs8B11RIKdbNMzCUjgjqIOkIBY6kqYeuf2liVijhPAry77rBmioJYqb42hzgkEh6M-oXpgdtNVK86VV4JSKkQ7SfRe_4mkmA1TvcjamXQGLrmLQ5ohlieekAiEDXSENoZ4oIlwhLPuYOYVHfremw6xfIgwKCRo3pCF7MHw9yWuwq2GqL6Yn-4NiHKxZJqO3w.png"
+    /> -->
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="1200" />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/water.css@2/out/light.css"
+    />
+    <style>
+      code > strong {
+        color: #379;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>sheet.spacet.me</h1>
+    <p>Quickly turn Google Sheets into a JSON endpoint.</p>
+
+    <h2>API</h2>
+    <ul>
+      <li>
+        <code
+          >GET /<strong>sheetId</strong>/<strong>sheetName</strong>.json</code
+        >
+        &mdash; Returns the sheet data as JSON
+      </li>
+    </ul>
+
+    <hr />
+    <p>API built by <a href="https://dt.in.th">@dtinth</a>.</p>
+    <script>
+      if (location.hash === '#og') {
+        document.body.style.marginTop = '150px'
+      }
+    </script>
+    <script>
+      fetch('/api/random-tweet')
+        .then((r) => r.json())
+        .catch((e) => {
+          return {
+            text: `${e}`,
+          }
+        })
+        .then((j) => {
+          textEl.textContent = j.text
+          if (j.user) {
+            attributionEl.innerHTML = `&mdash;<a href="${j.url}">@${j.user.screen_name}</a>`
+          }
+        })
+    </script>
+  </body>
+</html>
