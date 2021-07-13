@@ -1,0 +1,8 @@
+{
+  "routes": [
+    {
+      "src": "/([a-zA-Z0-9_\\-]+)/([a-zA-Z0-9_\\-]+).json",
+      "dest": "/api/sheet?id=$1&sheet=$2"
+    }
+  ]
+}

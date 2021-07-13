@@ -28,6 +28,24 @@
     <h1>sheet.spacet.me</h1>
     <p>Quickly turn Google Sheets into a JSON endpoint.</p>
 
+    <h2>Usage</h2>
+    <ol>
+      <li>
+        Make the sheet accessible to this service by doing any of these:
+        <ul>
+          <li>Share the sheet with <code id="email">(loading)</code></li>
+          <li>Make the sheet viewable by anyone with the link.</li>
+        </ul>
+      </li>
+      <li>Use the API (see below).</li>
+    </ol>
+
+    <script>
+      fetch('/api/sheet')
+        .then((r) => r.json())
+        .then((x) => (document.querySelector('#email').textContent = x.email))
+    </script>
+
     <h2>API</h2>
     <ul>
       <li>
@@ -36,6 +54,18 @@
         >
         &mdash; Returns the sheet data as JSON
       </li>
+    </ul>
+
+    <h2>Usage notes</h2>
+    <ul>
+      <li>
+        I made this API mainly for convenience. There is no uptime guarantee.
+      </li>
+      <li>
+        It is backed by two layers of CDN caching: Cloudflare and Vercel Edge
+        Network.
+      </li>
+      <li>Responses are cached for about 1 minute.</li>
     </ul>
 
     <hr />
