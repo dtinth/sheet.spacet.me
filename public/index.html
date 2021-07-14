@@ -179,22 +179,29 @@
     <h2>Usage notes</h2>
     <ul>
       <li>
-        The endpoint is backed by two layers of CDN caching:
-        <a
-          href="https://support.cloudflare.com/hc/en-us/articles/200172516-Understanding-Cloudflare-s-CDN"
-          >Cloudflare</a
-        >
-        and
-        <a href="https://vercel.com/docs/edge-network/caching">
-          Vercel Edge Network </a
-        >. Due to aggressive caching strategy, the sheet contents may be delayed
-        by about <strong>1 minute</strong>.
+        <p>
+          The endpoint is CORS-enabled and is backed by two layers of CDN
+          caching (<a
+            href="https://support.cloudflare.com/hc/en-us/articles/200172516-Understanding-Cloudflare-s-CDN"
+            >Cloudflare</a
+          >
+          and
+          <a href="https://vercel.com/docs/edge-network/caching"
+            >Vercel Edge Network</a
+          >), so a client-side application can fetch data directly from this
+          service. Due to aggressive caching strategy, the sheet contents may be
+          delayed by about <strong>1 minute</strong>.
+        </p>
       </li>
       <li>
-        I made this API mainly for my own convenience. While you are welcome to
-        use it, there is no support nor uptime guarantee. But this project is
-        open source, and you can run your own instance.
-        <a href="https://github.com/dtinth/sheet">Source code is on GitHub.</a>
+        <p>
+          I made this API mainly for my own convenience. While you are welcome
+          to use it, there is no support nor uptime guarantee. But this project
+          is open source, and you can run your own instance.
+          <a href="https://github.com/dtinth/sheet"
+            >Source code is on GitHub.</a
+          >
+        </p>
       </li>
     </ul>
 
