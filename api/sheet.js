@@ -11,6 +11,8 @@ if (
   process.env.GOOGLE_APPLICATION_CREDENTIALS = '/tmp/service-account.json'
 }
 
+const serverId = require('uuid').v4()
+const axios = require('axios')
 const { google } = require('googleapis')
 const sheets = google.sheets('v4')
 
@@ -27,6 +29,23 @@ module.exports = async function (request, response) {
   }
 
   response.setHeader('Access-Control-Allow-Origin', '*')
+  if (process.env.GA_MEASUREMENT_ID) {
+    axios.post(
+      'https://www.google-analytics.com/mp/collect?api_secret=' +
+        process.env.GA_SECRET +
+        '&measurement_id=' +
+        process.env.GA_MEASUREMENT_ID,
+      {
+        client_id: serverId,
+        events: [
+          {
+            name: 'sheet_request',
+            params: {},
+          },
+        ],
+      },
+    )
+  }
   try {
     const { data } = await sheets.spreadsheets.values.get({
       spreadsheetId: request.query.id,
