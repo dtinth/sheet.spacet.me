@@ -56,6 +56,12 @@ module.exports = async function (request, response) {
       'Cache-Control',
       `public, s-maxage=30, stale-while-revalidate=30, max-age=30`,
     )
+    // https://blogs.akamai.com/2021/06/targeted-cache-control.html
+    // https://blog.cloudflare.com/cdn-cache-control/
+    response.setHeader(
+      'Cloudflare-CDN-Cache-Control',
+      `public, s-maxage=30, stale-while-revalidate=30, max-age=30`,
+    )
     response.json({ values: data.values })
   } catch (e) {
     if (e.code === 403) {
