@@ -62,7 +62,10 @@ module.exports = async function (request, response) {
       'Cloudflare-CDN-Cache-Control',
       `public, s-maxage=30, stale-while-revalidate=30`,
     )
-    response.json({ values: data.values })
+    response.setHeader('Content-Type', `application/json; charset=utf-8`)
+    response.write(`{"values":\n[`)
+    response.write(data.values.map((row) => JSON.stringify(row)).join('\n,'))
+    response.end(`]}`)
   } catch (e) {
     if (e.code === 403) {
       const credentials = await auth.getCredentials()
