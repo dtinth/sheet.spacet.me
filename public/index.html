@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta
       name="description"
-      content="Quickly turn Google Sheets into a JSON endpoint."
+      content="Quickly turn Google Sheets into a public, CDN-backed JSON endpoint."
     />
     <title>sheet.spacet.me</title>
     <meta
@@ -36,6 +36,15 @@
       code > strong {
         color: #379;
       }
+      input.text-input {
+        max-width: 100%;
+        box-sizing: border-box;
+        padding-right: 0;
+      }
+      button {
+        padding-left: 1em;
+        padding-right: 1em;
+      }
     </style>
 
     <!-- Global site tag (gtag.js) - Google Analytics -->
@@ -55,7 +64,7 @@
   </head>
   <body>
     <h1>sheet.spacet.me</h1>
-    <p>Quickly turn Google Sheets into a JSON endpoint.</p>
+    <p>Quickly turn Google Sheets into a public, CDN-backed JSON endpoint.</p>
 
     <h2>Usage</h2>
     <ol>
@@ -90,16 +99,103 @@
       </li>
     </ul>
 
+    <h2>URL generator</h2>
+    <form>
+      <p>
+        <label for="sheet-url">Google Sheet URL:</label>
+        <input
+          class="text-input"
+          id="sheet-url"
+          type="text"
+          size="100"
+          placeholder="https://docs.google.com/spreadsheets/d/1_hCWsZ13xSnjnmSCx4flTFJCZ6D4yRZjDsaYDchqu08/edit#gid=0"
+        />
+      </p>
+      <p>
+        <label for="sheet-name">Sheet name:</label>
+        <input
+          class="text-input"
+          id="sheet-name"
+          type="text"
+          size="16"
+          value="Sheet1"
+        />
+      </p>
+      <p>
+        <label for="endpoint-url">Endpoint URL:</label>
+        <span style="display: flex; gap: 1ex">
+          <span style="flex: auto">
+            <input
+              class="text-input"
+              name="endpoint"
+              style="width: 100%"
+              id="endpoint-url"
+              type="text"
+              size="100"
+              value=""
+              readonly
+            />
+          </span>
+          <span style="flex: none">
+            <!-- Copy to clipboard button -->
+            <button
+              type="button"
+              onclick="this.form.endpoint.focus(); this.form.endpoint.select(); document.execCommand('copy');"
+            >
+              Copy
+            </button>
+          </span>
+        </span>
+      </p>
+    </form>
+    <script>
+      {
+        const $ = (selector) => document.querySelector(selector)
+        const update = () => {
+          const url = $('#sheet-url').value || $('#sheet-url').placeholder
+          const name = $('#sheet-name').value.trim()
+          $('#endpoint-url').value = (() => {
+            const match = url.match(/\/d\/([^\/]+)/)
+            if (!match) {
+              return '⚠️ Missing sheet URL'
+            }
+            if (!name) {
+              return '⚠️ Missing sheet name'
+            }
+            const sheetNameRegex = /^[a-zA-Z0-9_-]+$/
+            if (!sheetNameRegex.test(name)) {
+              return '⚠️ Sheet name may only contain letters, numbers, dashes, and underscores'
+            }
+            const sheetId = match[1]
+            const endpoint = `/${sheetId}/${name}.json`
+            return location.origin + endpoint
+          })()
+        }
+        update()
+        $('#sheet-url').onchange = $('#sheet-name').onchange = update
+      }
+    </script>
+
     <h2>Usage notes</h2>
     <ul>
       <li>
-        I made this API mainly for convenience. There is no uptime guarantee.
+        The endpoint is backed by two layers of CDN caching:
+        <a
+          href="https://support.cloudflare.com/hc/en-us/articles/200172516-Understanding-Cloudflare-s-CDN"
+          >Cloudflare</a
+        >
+        and
+        <a href="https://vercel.com/docs/edge-network/caching">
+          Vercel Edge Network </a
+        >. Due to aggressive caching strategy, the sheet contents may be delayed
+        by about <strong>1 minute</strong>.
       </li>
       <li>
-        It is backed by two layers of CDN caching: Cloudflare and Vercel Edge
-        Network.
+        I made this API mainly for my own convenience. While you are welcome to
+        use it, there is no support nor uptime guarantee. But this project is
+        open source, and you can run your own instance.
+        <a href="https://github.com/dtinth/sheet">Source code is on GitHub.</a>
       </li>
-      <li>Responses are cached for about 1 minute.</li>
     </ul>
 
     <hr />
