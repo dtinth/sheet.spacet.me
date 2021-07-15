@@ -54,13 +54,13 @@ module.exports = async function (request, response) {
     })
     response.setHeader(
       'Cache-Control',
-      `public, s-maxage=20, stale-while-revalidate=20, max-age=15`,
+      `public, s-maxage=15, stale-while-revalidate=15, max-age=15`,
     )
     // https://blogs.akamai.com/2021/06/targeted-cache-control.html
     // https://blog.cloudflare.com/cdn-cache-control/
     response.setHeader(
       'Cloudflare-CDN-Cache-Control',
-      `public, s-maxage=30, stale-while-revalidate=30`,
+      `public, s-maxage=30, stale-while-revalidate=60`,
     )
     response.setHeader('Content-Type', `application/json; charset=utf-8`)
     response.write(`{"values":\n[`)
