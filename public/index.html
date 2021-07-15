@@ -103,23 +103,11 @@
     <form>
       <p>
         <label for="sheet-url">Google Sheet URL:</label>
-        <input
-          class="text-input"
-          id="sheet-url"
-          type="text"
-          size="100"
-          placeholder="https://docs.google.com/spreadsheets/d/1_hCWsZ13xSnjnmSCx4flTFJCZ6D4yRZjDsaYDchqu08/edit#gid=0"
-        />
+        <input class="text-input" id="sheet-url" type="text" size="100" />
       </p>
       <p>
         <label for="sheet-name">Sheet name:</label>
-        <input
-          class="text-input"
-          id="sheet-name"
-          type="text"
-          size="16"
-          value="Sheet1"
-        />
+        <input class="text-input" id="sheet-name" type="text" size="16" />
       </p>
       <p>
         <label for="endpoint-url">Endpoint URL:</label>
@@ -151,10 +139,14 @@
     <script>
       {
         const $ = (selector) => document.querySelector(selector)
+        const $sheetUrl = $('#sheet-url')
+        const $sheetName = $('#sheet-name')
+        const $endpointUrl = $('#endpoint-url')
+
         const update = () => {
-          const url = $('#sheet-url').value || $('#sheet-url').placeholder
-          const name = $('#sheet-name').value.trim()
-          $('#endpoint-url').value = (() => {
+          const url = $sheetUrl.value || $sheetUrl.placeholder
+          const name = $sheetName.value.trim()
+          $endpointUrl.value = (() => {
             const match = url.match(/\/d\/([^\/]+)/)
             if (!match) {
               return '⚠️ Missing sheet URL'
@@ -172,7 +164,23 @@
           })()
         }
         update()
-        $('#sheet-url').onchange = $('#sheet-name').onchange = update
+        $sheetUrl.onchange = update
+        $sheetName.onchange = update
+
+        const loadDefaultValues = async () => {
+          const { values } = await fetch(
+            '/1_hCWsZ13xSnjnmSCx4flTFJCZ6D4yRZjDsaYDchqu08/Sheet1.json',
+          ).then((r) => r.json())
+          const config = Object.fromEntries(
+            values.slice(1).map(([key, value]) => [key, value]),
+          )
+          $sheetUrl.placeholder = config['Default sheet URL']
+          if (!$sheetName.value) {
+            $sheetName.value = config['Default sheet name']
+          }
+          update()
+        }
+        loadDefaultValues()
       }
     </script>
 
