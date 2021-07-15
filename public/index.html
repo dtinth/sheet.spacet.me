@@ -58,14 +58,16 @@
           'how-to-fetch'
           'postprocessing'
           'example'
-          'code';
+          'code'
+          'tip';
       }
       @media (min-width: 600px) {
         .code-gen-grid {
           grid-template-areas:
             'how-to-fetch example'
             'postprocessing example'
-            'code code';
+            'code code'
+            'tip tip';
           grid-template-columns: 1fr 2fr;
         }
       }
@@ -232,6 +234,16 @@
                 Copy
               </button>
             </span>
+          </p>
+
+          <p style="grid-area: tip">
+            <em>
+              Did you know? The above templates are defined in
+              <a
+                href="https://docs.google.com/spreadsheets/d/1_hCWsZ13xSnjnmSCx4flTFJCZ6D4yRZjDsaYDchqu08/edit?usp=sharing"
+                >this config spreadsheet</a
+              >.</em
+            >
           </p>
         </div>
       </details>
