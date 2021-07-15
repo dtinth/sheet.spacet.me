@@ -301,7 +301,12 @@
             const howToFetch = $howToFetch.value
             const postprocessing = $postprocessing.value
             const functionTemplate = config['Function template']
+            const endpointUrl = getEndpointUrl()
+            const parts = endpointUrl.split('/')
             const substitutions = {
+              $sheetId: parts[parts.length - 2],
+              $sheetName: (parts[parts.length - 1] || '').slice(0, -5),
+              $baseUrl: parts.slice(0, -2).join('/'),
               $endpoint: getEndpointUrl(),
               $fetch: config[`Fetch template: ${howToFetch}`],
               $process: config[`Processing template: ${postprocessing}`],
