@@ -19,12 +19,12 @@ module.exports = async function (request, response) {
           { startDate: daysAgo(28), endDate: daysAgo(0) },
           { startDate: daysAgo(7), endDate: daysAgo(0) },
         ],
-        metrics: [{ name: 'eventCount' }],
+        metrics: [{ name: 'eventCount' }, { name: 'totalUsers' }],
         dimensions: [{ name: 'eventName' }],
         dimensionFilter: {
           filter: {
             fieldName: 'eventName',
-            stringFilter: { value: 'sheet_request' },
+            stringFilter: { value: 'sheet_endpoint_request' },
           },
         },
       },

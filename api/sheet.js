@@ -2,12 +2,18 @@ require('./_init')
 
 const serverId = require('uuid').v4()
 const axios = require('axios')
+const crypto = require('crypto')
 const { google } = require('googleapis')
 const sheets = google.sheets('v4')
 
 const auth = new google.auth.GoogleAuth({
   scopes: ['https://www.googleapis.com/auth/spreadsheets'],
 })
+
+const hash = (str) => {
+  const hash = crypto.createHash('md5')
+  return hash.update(str).digest('hex')
+}
 
 module.exports = async function (request, response) {
   if (!request.query.id) {
@@ -18,6 +24,8 @@ module.exports = async function (request, response) {
   }
 
   response.setHeader('Access-Control-Allow-Origin', '*')
+
+  const sheetHash = hash(String(request.query.id))
   if (process.env.GA_MEASUREMENT_ID) {
     axios.post(
       'https://www.google-analytics.com/mp/collect?api_secret=' +
@@ -26,9 +34,10 @@ module.exports = async function (request, response) {
         process.env.GA_MEASUREMENT_ID,
       {
         client_id: serverId,
+        user_id: sheetHash,
         events: [
           {
-            name: 'sheet_request',
+            name: 'sheet_endpoint_request',
             params: {},
           },
         ],
